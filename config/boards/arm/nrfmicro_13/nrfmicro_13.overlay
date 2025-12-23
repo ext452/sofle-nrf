@@ -1,0 +1,25 @@
+/ {
+    chosen {
+        /* Сообщаем ZMK, какой сенсор батареи использовать */
+        zmk,battery = &vbatt;
+    };
+
+    /* Считывание через делитель напряжения на SAADC */
+    vbatt: vbatt {
+        compatible = "zmk,battery-voltage-divider";
+        status = "okay";
+
+        /* Канал SAADC (AINx), куда приходит напряжение после делителя */
+        io-channels = <&adc 2>;     /* <-- если у тебя другой AIN, поменяй число */
+
+        /* Номиналы делителя:
+         * output-ohms = нижний (к GND)
+         * full-ohms   = сумма верхний + нижний
+         * Для 1M/1M:
+         */
+        output-ohms = <1000000>;
+        full-ohms   = <2000000>;
+
+        label = "BAT_VDIV";
+    };
+};
